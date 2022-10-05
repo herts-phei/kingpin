@@ -1,0 +1,14 @@
+Package: kingpin
+Title: Kingpin Wrapper for Pins
+Version: 0.0.0.9000
+Authors@R: c(
+          person(given = "Anran", family = "Yu", role = "cre", email = "annie.yu@hertfordshire.gov.uk")
+          )
+Description: A wrapper package for the pins package. Stores metadata for analysis of pin useage and includes presets following organisational preferences.
+Depends:
+  R (>= 3.5.0)
+Imports: pins, rstudioapi, purrr, magrittr, dplyr
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
