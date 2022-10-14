@@ -9,7 +9,7 @@
 #' versioned = FALSE,
 #' ...)
 #'
-#' @param board A pins board object from the pins package
+#' @param board A pins board object from board_rsconnect()
 #' @param file Object to be pinned
 #' @param name Name of object to be pinned
 #' @param versioned Whether to pin with version control on

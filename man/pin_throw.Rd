@@ -12,7 +12,7 @@ versioned = FALSE,
 ...)
 }
 \arguments{
-\item{board}{A pins board object from the pins package}
+\item{board}{A pins board object from board_rsconnect()}
 
 \item{file}{Object to be pinned}
 

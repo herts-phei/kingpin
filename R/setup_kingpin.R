@@ -45,6 +45,8 @@ setup_kingpin <- function(server,
     )
   )
 
+  pin_pit <- list()
+
   # ERROR HANDLING
   prev_data <- purrr::quietly(try)( # catch error if it happens. class will be try-error if it does.
     pins::pin_read(board, "kingpin"), silent = T)$result
@@ -61,12 +63,15 @@ setup_kingpin <- function(server,
   } else {
 
     # PIN KINGPIN
-    pins::pin_write(board, kingpin, "kingpin")
+    res <- purrr::quietly(pins::pin_write)(board, kingpin, "kingpin")
     message("Kingpin on board.")
+
+    res <- purrr::quietly(pins::pin_write)(board, pin_pit, "pin_pit")
+    message("Pin pit made.")
 
     # ADJUST PERMISSIONS
     call_group <- httr::GET(paste0(server, "__api__/v1/groups"),
-                        httr::add_headers(Authorization = paste("Key", key)))
+                            httr::add_headers(Authorization = paste("Key", key)))
 
     guid <- dplyr::bind_rows(httr::content(call_group)$results) |>
       dplyr::filter(name == group) |>
@@ -75,8 +80,8 @@ setup_kingpin <- function(server,
     call_pins <- httr::GET(paste0(server, "__api__/v1/content"),
                            httr::add_headers(Authorization = paste("Key", key)))
 
-    id <- dplyr::bind_rows(httr::content(call_pins)) |>
-      dplyr::filter(name == "kingpin") |>
+    ids <- dplyr::bind_rows(httr::content(call_pins)) |>
+      dplyr::filter(name %in% c("kingpin", "pin_pit")) |>
       dplyr::pull(guid)
 
     body <- paste0('{
@@ -85,9 +90,13 @@ setup_kingpin <- function(server,
     "role": "owner"
     }')
 
-    result <- httr::POST(paste0(server, "__api__/v1/content/", id, "/permissions"),
-                   body = body, encode = "raw",
-                   httr::add_headers(Authorization = paste("Key", key)))
+    result <- httr::POST(paste0(server, "__api__/v1/content/", ids[1], "/permissions"),
+                         body = body, encode = "raw",
+                         httr::add_headers(Authorization = paste("Key", key)))
+
+    result <- httr::POST(paste0(server, "__api__/v1/content/", ids[2], "/permissions"),
+                         body = body, encode = "raw",
+                         httr::add_headers(Authorization = paste("Key", key)))
 
     message(paste0("Owner permissions given to group ", group))
 

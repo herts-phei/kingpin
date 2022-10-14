@@ -17,7 +17,7 @@ force = FALSE)
 \item{force}{Whether to force an override of an existing kingpin.}
 }
 \value{
-A new pin named "kingpin" will be pinned on the board supplied to the function. NOTE: Access permissions are not automatically granted to users other than the active user.
+A new pin named "kingpin" will be pinned on the board supplied to the function.
 }
 \description{
 Sets up an empty "kingpin" pin to a board to be populated by activity data

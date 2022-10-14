@@ -7,7 +7,7 @@
 #' name,
 #' ...)
 #'
-#' @param board A pins board object from the pins package
+#' @param board A pins board object from board_rsconnect()
 #' @param name Name of pin to be read
 #' @param ... Any additional arguments for pins::pin_read
 #'
