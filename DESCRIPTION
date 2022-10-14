@@ -6,8 +6,8 @@ Authors@R: c(
           )
 Description: A wrapper package for the pins package. Stores metadata for analysis of pin useage and includes presets following organisational preferences.
 Depends:
-  R (>= 3.5.0)
-Imports: pins, rstudioapi, purrr, magrittr, dplyr
+  R (>= 4.1.0)
+Imports: pins, rstudioapi, purrr, magrittr, dplyr, httr
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
