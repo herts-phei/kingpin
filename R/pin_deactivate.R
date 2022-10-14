@@ -9,6 +9,8 @@
 #' ...)
 #'
 #' @param board A pins board object from board_rsconnect()
+#' @param server URL of the board server. It's recommended to store these details in .Renviron and use Sys.getenv()
+#' @param key API key to access the board. It's recommended to store these details in .Renviron and use Sys.getenv()
 #' @param name Name of pin to be read
 #' @param force Whether to bypass confirmation messages on console
 #'
@@ -28,6 +30,8 @@
 #'  #purrr::quietly(pins::pin_read)(board, name = "pin_pit")$result
 #'
 pin_deactivate <- function(board,
+                           server,
+                           key,
                            name,
                            force = FALSE,
                            group = "Epi") {

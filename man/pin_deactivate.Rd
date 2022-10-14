@@ -13,6 +13,10 @@ force,
 \arguments{
 \item{board}{A pins board object from board_rsconnect()}
 
+\item{server}{URL of the board server. It's recommended to store these details in .Renviron and use Sys.getenv()}
+
+\item{key}{API key to access the board. It's recommended to store these details in .Renviron and use Sys.getenv()}
+
 \item{name}{Name of pin to be read}
 
 \item{force}{Whether to bypass confirmation messages on console}
