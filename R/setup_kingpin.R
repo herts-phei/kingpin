@@ -11,7 +11,7 @@
 #' @param key API key to access the board. It's recommended to store these details in .Renviron and use Sys.getenv()
 #' @param force Whether to force an override of an existing kingpin.
 #'
-#' @return A new pin named "kingpin" will be pinned on the board supplied to the function. NOTE: Access permissions are not automatically granted to users other than the active user.
+#' @return A new pin named "kingpin" will be pinned on the board supplied to the function.
 #' @export
 #' @examples
 #' # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
@@ -52,7 +52,7 @@ setup_kingpin <- function(server,
   if(class(prev_data) == "try-error" & !force) {
 
     # if (!force) {
-      message("Kingpin already exists in RSConnect Board. Either manually remove, or use force = TRUE.")
+    message("Kingpin already exists in RSConnect Board. Either manually remove, or use force = TRUE.")
     # } else {
     #   user_input <- readline("Overriding previous kingpin using force = TRUE. \nAre you sure you want to proceed? (y/n)")
     #   if(!grepl("y", user_input)) message('Kingpin already exists in RSConnect Board.')
