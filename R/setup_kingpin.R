@@ -55,7 +55,7 @@ setup_kingpin <- function(server,
       message("Kingpin already exists in RSConnect Board. Either manually remove, or use force = TRUE.")
     } else {
       user_input <- readline("Overriding previous kingpin using force = TRUE. \nAre you sure you want to proceed? (y/n)")
-      if(user_input != 'y') message('Kingpin already exists in RSConnect Board.')
+      if(!grepl("y", user_input)) message('Kingpin already exists in RSConnect Board.')
     }
 
   } else {
