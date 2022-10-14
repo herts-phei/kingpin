@@ -13,7 +13,7 @@
 #' @param force Whether to bypass confirmation messages on console
 #'
 #' @return Specified pin will be deleted but backed up in pin_pit
-#' @export pin_deactivate
+#' @export
 #' @examples
 #' # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
 #' board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_SERVER"))
