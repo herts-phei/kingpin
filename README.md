@@ -6,12 +6,12 @@ First, make sure you have environmental variables `CONNECT_SERVER` and `CONNECT_
 
 Download the current version of the package by running 
 
-`devtools::install_github("herts-phei/kingpin")
-library(kingpin)`
+devtools::install_github("herts-phei/kingpin")
+library(kingpin)
 
 Test if you can connect.
 
-`board <- board_rsconnect(server = Sys.getenv("CONNECT_SERVER"),
+board <- board_rsconnect(server = Sys.getenv("CONNECT_SERVER"),
                          key = Sys.getenv("CONNECT_API_KEY"))
                          
-                         kingpin <- pin_return(board, "kingpin")`
+kingpin <- pin_return(board, "kingpin")
