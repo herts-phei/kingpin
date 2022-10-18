@@ -47,7 +47,7 @@ pin_deactivate <- function(board,
     backup[[name[i]]] <- list(content = backup_first,
                               countdown = "7 days to deletion")
 
-    res <- purrr::quietly(pins::pin_write)(board, backup, "pin_pit")
+    suppressMessages(pins::pin_write(board, backup, "pin_pit"))
 
     call_pins <- httr::GET(paste0(server, "__api__/v1/content"),
                            httr::add_headers(Authorization = paste("Key", key)))
