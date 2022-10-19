@@ -29,11 +29,17 @@
 pin_throw <- function(board, file, name,
                       versioned = FALSE, ...) {
 
+  if(!is.null(rstudioapi::getActiveProject())) {
+    project <- sub('.*/', '', rstudioapi::getActiveProject())
+  } else {
+    project <- "none"
+  }
+
   # Update kingpin
   kingpin <- purrr::quietly(pins::pin_read)(board, "kingpin")$result
   kingpin$records <- kingpin$records |>
     dplyr::bind_rows(data.frame(pin_name = name, # pin name
-                                project_name = sub('.*/', '', rstudioapi::getActiveProject()), # name of project associated with pin, if applicable
+                                project_name = project, # name of project associated with pin, if applicable
                                 writer = Sys.info()["user"], # username of pin_write instance
                                 write_date = as.character(Sys.time()), # date of pin_write instance
                                 reader = NA, # username of pin_read instance

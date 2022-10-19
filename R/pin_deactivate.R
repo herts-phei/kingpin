@@ -18,7 +18,7 @@
 #' @export
 #' @examples
 #' # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
-#' board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_SERVER"))
+#' board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 #'
 #' # Pin something temporary first
 #' #pins::pin_write(board, data.frame(a = 1:10, b = 1:10), "temp")
@@ -57,9 +57,9 @@ pin_deactivate <- function(board,
 
     # DELETION
     if(!force) {
-        user_input <- readline(paste0("Are you sure you want to delete '", name[i], "'? (y/n)"))
+        user_input <- readline(paste0("Are you sure you want to delete '", name[i], "'? (y/n) "))
 
-        if(!grepl("n", user_input)) { stop("Operation halted.") } else {
+        if(substr(user_input, 1, 1) == "n") { stop("Operation halted.") } else {
           result <- httr::DELETE(paste0(server, "__api__/v1/content/", id),
                                  httr::add_headers(Authorization = paste("Key", key)))
 
