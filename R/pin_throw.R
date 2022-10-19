@@ -39,11 +39,11 @@ pin_throw <- function(board, file, name, ...) {
   }
 
   # Write pin and check if user has access to the pin
-  access <- suppressMessages(pins::pin_write(board, file, name))
+  access <- suppressMessages(purrr::safely(pins::pin_write)(board, file, name))
   if (is.null(access$result)) { stop("You are trying to write to an existing pin you do not have access to. Please check the board before trying again.") }
 
   # Update kingpin
-  kingpin <- purrr::quietly(pins::pin_read)(board, "kingpin")$result
+  kingpin <- purrr::quietly(pins::pin_read)(board, "kingpin", ...)$result
   kingpin$records <- kingpin$records |>
     dplyr::bind_rows(data.frame(pin_name = name, # pin name
                                 project_name = project, # name of project associated with pin, if applicable
@@ -53,6 +53,6 @@ pin_throw <- function(board, file, name, ...) {
                                 read_date = NA # date of pin_read instance
     ))
 
-  out <- purrr::quietly(pins::pin_write)(board, kingpin, "kingpin", ...)
+  out <- purrr::quietly(pins::pin_write)(board, kingpin, "kingpin")
 
 }
