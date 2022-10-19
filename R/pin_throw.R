@@ -19,15 +19,14 @@
 #' @export pin_throw
 #' @examples
 #' # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
-#' board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_SERVER"))
+#' board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 #'
 #' #pins::pin_throw(board, data.frame(a = 1:10, b = 1:10), "temp")
 #'
 #' # To check if kingpin has updated:
 #' #kingpin <- purrr::quietly(pins::pin_read)(board, "kingpin")$result$records
 #'
-pin_throw <- function(board, file, name,
-                      versioned = FALSE, ...) {
+pin_throw <- function(board, file, name, ...) {
 
   # Clean pin name
   name <- sub('.*/', '', name)
@@ -39,8 +38,8 @@ pin_throw <- function(board, file, name,
     project <- "none"
   }
 
-  # Check if user has access to the pin
-  access <- suppressMessages(purrr::safely(pins::pin_write)(board, file, name))
+  # Write pin and check if user has access to the pin
+  access <- suppressMessages(pins::pin_write(board, file, name))
   if (is.null(access$result)) { stop("You are trying to write to an existing pin you do not have access to. Please check the board before trying again.") }
 
   # Update kingpin
@@ -54,9 +53,6 @@ pin_throw <- function(board, file, name,
                                 read_date = NA # date of pin_read instance
     ))
 
-  purrr::quietly(pins::pin_write)(board, kingpin, "kingpin")
-
-  # Write pin in question
-  purrr::quietly(pins::pin_write)(board, file, name, versioned = versioned, ...)
+  out <- purrr::quietly(pins::pin_write)(board, kingpin, "kingpin", ...)
 
 }

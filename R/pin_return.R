@@ -39,8 +39,8 @@ pin_return <- function(board, name, ...) {
   }
 
   # Check if user has access to the pin
-  access <- suppressMessages(purrr::safely(pins::pin_read)(board, name))
-  if (is.null(access$result)) { stop("You do not have access to the pin. Please contact the pin owner for access.") }
+  content <- suppressMessages(purrr::safely(pins::pin_read)(board, name, ...))
+  if (is.null(content$result)) { stop("The pin doesn't exist or you don't have access to the pin. Please contact the pin owner for access.") }
 
   # Update kingpin
   kingpin <- purrr::quietly(pins::pin_read)(board, "kingpin")$result
@@ -53,9 +53,9 @@ pin_return <- function(board, name, ...) {
                                 read_date = as.character(Sys.time()) # date of pin_read instance
     ))
 
-  purrr::quietly(pins::pin_write)(board, kingpin, "kingpin")
+  out <- purrr::quietly(pins::pin_write)(board, kingpin, "kingpin")
 
   # Return pin in question
-  purrr::quietly(pins::pin_read)(board, name, ...)$result
+  content$result
 
 }

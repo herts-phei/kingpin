@@ -33,7 +33,6 @@ pin_deactivate <- function(board,
                            server,
                            key,
                            name,
-                           force = FALSE,
                            group = "Epi") {
 # TODO NOTE DONT SPECIFY USER NAME WITH PIN
 
@@ -41,37 +40,33 @@ pin_deactivate <- function(board,
 
   for (i in 1:length(name)) {
 
-    # BACKUP TO PIN PIT
-    backup_first <- purrr::quietly(pins::pin_read)(board, name[i])
-    backup <- purrr::quietly(pins::pin_read)(board, "pin_pit")$result
-    backup[[name[i]]] <- list(content = backup_first,
+    # Clean pin name
+    name <- sub('.*/', '', name)
+
+    # Check if user has access to the pin
+    content <- suppressMessages(purrr::safely(pins::pin_read)(board, name))
+    if (is.null(content$result)) { stop("The pin doesn't exist or you don't have access to the pin. Please contact the pin owner for access.") }
+
+    # RENAME PIN AND ADD DATA TO PIN_PIT
+    backup_first <- purrr::quietly(pins::pin_read)(board, name[i])$result
+    pin_pit <- purrr::quietly(pins::pin_read)(board, "pin_pit")$result
+    pin_pit[[name[i]]] <- list(content = backup_first,
                               countdown = "7 days to deletion")
 
-    suppressMessages(pins::pin_write(board, backup, "pin_pit"))
+    suppressMessages(pins::pin_write(board, pin_pit, "pin_pit"))
 
+    # DELETION
     call_pins <- httr::GET(paste0(server, "__api__/v1/content"),
                            httr::add_headers(Authorization = paste("Key", key)))
 
     id <- dplyr::bind_rows(httr::content(call_pins))
-    id <- id$guid[id$name == name[i]]
+    id <- id$guid[id$name == name[i]] # ID of the pin to delete
 
-    # DELETION
-    if(!force) {
-        user_input <- readline(paste0("Are you sure you want to delete '", name[i], "'? (y/n) "))
+    result <- httr::DELETE(paste0(server, "__api__/v1/content/", id),
+                           httr::add_headers(Authorization = paste("Key", key)))
 
-        if(substr(user_input, 1, 1) == "n") { stop("Operation halted.") } else {
-          result <- httr::DELETE(paste0(server, "__api__/v1/content/", id),
-                                 httr::add_headers(Authorization = paste("Key", key)))
+    text <- cat(text, paste0(name[i], " \U0002705", "\n"))
 
-          text <- cat(text, paste0(name[i], " \U0002705", "\n"))
-        }
-
-    } else {
-      result <- httr::DELETE(paste0(server, "__api__/v1/content/", id),
-                             httr::add_headers(Authorization = paste("Key", key)))
-
-      text <- cat(text, paste0(name[i], " \U0002705", "\n"))
-    }
   }
 
 }
