@@ -1,0 +1,45 @@
+---
+title: "Pin_pit status"
+output: html_document
+---
+
+# DO NOT RERUN MANUALLY UNLESS YOU HAVE A BACKUP 
+
+## Instructions:
+
+- Make sure you have kingpin installed
+- Make sure you have CONNECT_SERVER and CONNECT_API_KEY_PHINTEL environmental variables in your .Renviron file
+- Deploy this .Rmd to your RSConnect board and schedule to run every day at the time of your choosing. 
+- Do not manually rerun after all this is set up. Let the automated schedule run this script and nothing more. 
+
+```{r update, echo=FALSE, message=FALSE, warning=FALSE}
+devtools::install_github("herts-phei/kingpin")
+library(kingpin)
+
+board <- board_rsconnect(Sys.getenv("CONNECT_SERVER"), 
+                         Sys.getenv("CONNECT_API_KEY_PHINTEL"))
+pin_pit <- kingpin::pin_return(board, "pin_pit")
+
+# DELETE PIN IF DEADLINE REACHED
+pin_pit <- lapply(pin_pit, function(x) {
+  if (grepl("0", x$countdown)) {
+    x <- NULL # remove
+  } else {
+    x$countdown <- paste0(as.numeric(substr(x$countdown, 1, 1)) - 1, " days to deletion") # count down 
+    return(x)
+  }
+}) |>
+  purrr::discard(is.null)
+
+# REPIN
+kingpin::pin_throw(board, pin_pit, "pin_pit")
+
+```
+
+## Pins to be deactivated 
+
+```{r table, echo=FALSE}
+data.frame(Pin = names(pin_pit),
+           Countdown = sapply(pin_pit, function(x) x$countdown)) |>
+  reactable::reactable(rownames = F)
+```
