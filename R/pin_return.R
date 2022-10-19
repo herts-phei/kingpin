@@ -15,7 +15,7 @@
 #' @export pin_return
 #' @examples
 #' # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
-#' board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_SERVER"))
+#' board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 #'
 #' # Pin something temporary first
 #' #pins::pin_write(board, data.frame(a = 1:10, b = 1:10), "temp")
@@ -28,11 +28,19 @@
 #'
 pin_return <- function(board, name, ...) {
 
+  # Clean pin name
+  name <- sub('.*/', '', name)
+
+  # Get active project
   if(!is.null(rstudioapi::getActiveProject())) {
     project <- sub('.*/', '', rstudioapi::getActiveProject())
   } else {
     project <- "none"
   }
+
+  # Check if user has access to the pin
+  access <- suppressMessages(purrr::safely(pins::pin_read)(board, name))
+  if (is.null(access$result)) { stop("You do not have access to the pin. Please contact the pin owner for access.") }
 
   # Update kingpin
   kingpin <- purrr::quietly(pins::pin_read)(board, "kingpin")$result

@@ -29,11 +29,19 @@
 pin_throw <- function(board, file, name,
                       versioned = FALSE, ...) {
 
+  # Clean pin name
+  name <- sub('.*/', '', name)
+
+  # Get active project
   if(!is.null(rstudioapi::getActiveProject())) {
     project <- sub('.*/', '', rstudioapi::getActiveProject())
   } else {
     project <- "none"
   }
+
+  # Check if user has access to the pin
+  access <- suppressMessages(purrr::safely(pins::pin_write)(board, file, name))
+  if (is.null(access$result)) { stop("You are trying to write to an existing pin you do not have access to. Please check the board before trying again.") }
 
   # Update kingpin
   kingpin <- purrr::quietly(pins::pin_read)(board, "kingpin")$result
