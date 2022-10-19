@@ -32,10 +32,11 @@ pin_return <- function(board, name, ...) {
   name <- sub('.*/', '', name)
 
   # Get active project
-  if(!is.null(rstudioapi::getActiveProject())) {
-    project <- sub('.*/', '', rstudioapi::getActiveProject())
-  } else {
+  call <- purrr::safely(rstudioapi::getActiveProject)()
+  if(is.null(call$result) | !is.null(call$error)) { # If not in a project or not in a session
     project <- "none"
+  } else {
+    project <- sub('.*/', '', rstudioapi::getActiveProject())
   }
 
   # Check if user has access to the pin
