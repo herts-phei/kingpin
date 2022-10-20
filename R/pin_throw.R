@@ -26,10 +26,20 @@
 #' # To check if kingpin has updated:
 #' #kingpin <- purrr::quietly(pins::pin_read)(board, "kingpin")$result$records
 #'
-pin_throw <- function(board, file, name, ...) {
+pin_throw <- function(board,
+                      file,
+                      name,
+                      comment = NULL, ...) {
 
   # Clean pin name
   name <- sub('.*/', '', name)
+
+  # Add comment
+  comment(file) <- comment
+  if (is.null(comment)) {
+    message("Pin will be pinned with no description. Please consider adding a description using the `comment` argument.") } else {
+      cat("Pinned", name, "with the description '", comment(file), "'.")
+    }
 
   # Get active project
   call <- purrr::safely(rstudioapi::getActiveProject)()
@@ -44,14 +54,16 @@ pin_throw <- function(board, file, name, ...) {
   if (is.null(access$result)) { stop("You are trying to write to an existing pin you do not have access to. Please check the board before trying again.") }
 
   # Update kingpin
-  kingpin <- purrr::quietly(pins::pin_read)(board, "kingpin", ...)$result
+  kingpin <- purrr::quietly(pins::pin_read)(board, "kingpin")$result
   kingpin$records <- kingpin$records |>
     dplyr::bind_rows(data.frame(pin_name = name, # pin name
                                 project_name = project, # name of project associated with pin, if applicable
                                 writer = Sys.info()["user"], # username of pin_write instance
                                 write_date = as.character(Sys.time()), # date of pin_write instance
                                 reader = NA, # username of pin_read instance
-                                read_date = NA # date of pin_read instance
+                                read_date = NA, # date of pin_read instance
+                                comment = comment
+
     ))
 
   out <- purrr::quietly(pins::pin_write)(board, kingpin, "kingpin")

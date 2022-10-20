@@ -12,7 +12,7 @@ output: html_document
 - Deploy this .Rmd to your RSConnect board and schedule to run every day at the time of your choosing. 
 - Do not manually rerun after all this is set up. Let the automated schedule run this script and nothing more. 
 
-```{r update, echo=FALSE, message=FALSE, warning=FALSE}
+```{r update, include=FALSE}
 devtools::install_github("herts-phei/kingpin")
 library(kingpin)
 
@@ -40,6 +40,9 @@ kingpin::pin_throw(board, pin_pit, "pin_pit")
 
 ```{r table, echo=FALSE}
 data.frame(Pin = names(pin_pit),
-           Countdown = sapply(pin_pit, function(x) x$countdown)) |>
+           Countdown = sapply(pin_pit, function(x) x$countdown),
+           Description = sapply(pin_pit, function(x) {
+             if(is.null(comment(x$content))) { "-" } else { comment(x$content) }
+               })) |>
   reactable::reactable(rownames = F)
 ```
