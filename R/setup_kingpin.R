@@ -52,7 +52,7 @@ setup_kingpin <- function(server,
   prev_data <- purrr::quietly(try)( # catch error if it happens. class will be try-error if it does.
     pins::pin_read(board, "kingpin"), silent = T)$result
 
-  if(class(prev_data) == "try-error" & !force) {
+  if(class(prev_data) != "try-error" & !force) {
 
     message("Kingpin already exists in RSConnect Board. Either manually remove, or use force = TRUE.")
 
