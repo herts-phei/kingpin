@@ -37,7 +37,8 @@ pin_throw <- function(board,
   # Add comment
   comment(file) <- comment
   if (is.null(comment)) {
-    message("Pin will be pinned with no description. Please consider adding a description using the `comment` argument.") } else {
+    message("Pin will be pinned with no description. Please consider adding a description using the `comment` argument.")
+    comment <- NA } else {
       cat("Pinned", name, "with the description '", comment(file), "'.")
     }
 

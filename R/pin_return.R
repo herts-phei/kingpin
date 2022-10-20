@@ -43,6 +43,9 @@ pin_return <- function(board, name, ...) {
   content <- suppressMessages(purrr::safely(pins::pin_read)(board, name))
   if (is.null(content$result)) { stop("The pin doesn't exist or you don't have access to the pin. Please contact the pin owner for access.") }
 
+  # Check if there's a comment
+  if (is.null(comment(content$result))) comment <- NA
+
   # Update kingpin
   kingpin <- purrr::quietly(pins::pin_read)(board, "kingpin")$result
   kingpin$records <- kingpin$records |>
