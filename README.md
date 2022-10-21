@@ -1,3 +1,6 @@
+  <!-- badges: start -->
+  [![R-CMD-check](https://github.com/herts-phei/kingpin/workflows/R-CMD-check/badge.svg)](https://github.com/herts-phei/kingpin/actions)
+  <!-- badges: end -->
 # Kingpin (in progress)
 
 ## How to use
