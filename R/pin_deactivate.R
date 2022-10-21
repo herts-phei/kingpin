@@ -18,16 +18,20 @@
 #' @export
 #' @examples
 #' # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
-#' board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
+#' library(kingpin)
+#' board <- kingpin::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 #'
 #' # Pin something temporary first
-#' #pins::pin_write(board, data.frame(a = 1:10, b = 1:10), "temp")
+#' kingpin::pin_throw(board, data.frame(a = 1:10, b = 1:10), "temp")
 #'
 #' # Retrieve pin
-#' #pin_deactivate(board, name = "temp")
+#' kingpin::pin_deactivate(board,
+#' server = Sys.getenv("CONNECT_SERVER"),
+#' key = Sys.getenv("CONNECT_API_KEY"),
+#' name = "temp")
 #'
 #' # To check if the pin has been backed up in pin_pit:
-#'  #purrr::quietly(pins::pin_read)(board, name = "pin_pit")$result
+#'  kingpin::pin_return(board, "pin_pit")
 #'
 pin_deactivate <- function(board,
                            server,

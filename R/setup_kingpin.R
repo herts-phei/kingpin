@@ -27,12 +27,12 @@ setup_kingpin <- function(server,
 
   kingpin <- list(
     records = data.frame(pin_name = "kingpin", # pin name
-                         project_name = NA, # name of project associated with pin, if applicable
+                         project_name = "none", # name of project associated with pin, if applicable
                          writer = Sys.info()["user"], # username of pin_write instance
                          write_date = Sys.time(), # date of pin_write instance
                          reader = NA, # username of pin_read instance
                          read_date = NA, # date of pin_read instance
-                         comment = NA
+                         comment = "Kingpin holding pin usage data"
     ),
     summary = data.frame(pin_name = "kingpin", # pin name
                          project_names = NA, # concatenated names of project associated with pin, if applicable
