@@ -1,6 +1,4 @@
-  <!-- badges: start -->
-  [![R-CMD-check](https://github.com/herts-phei/kingpin/workflows/R-CMD-check/badge.svg)](https://github.com/herts-phei/kingpin/actions)
-  <!-- badges: end -->
+
 # Kingpin (in progress)
 
 The kingpin package is a supporting pins management package produced for internal use in the PHEI team. External parties may use this package with caution that certain functionalities may not be applicable. 
