@@ -38,7 +38,6 @@ pin_deactivate <- function(board,
                            key,
                            name,
                            group = "Epi") {
-# TODO NOTE DONT SPECIFY USER NAME WITH PIN
 
   text <- "Deleted and backed up: \n"
 
