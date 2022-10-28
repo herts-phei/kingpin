@@ -51,7 +51,7 @@ pin_deactivate <- function(board,
     # RENAME PIN AND ADD DATA TO PIN_PIT
     backup_first <- purrr::quietly(pins::pin_read)(board, name)$result
     pin_pit <- purrr::quietly(pins::pin_read)(board, "pin_pit")$result
-    pin_pit[[name[i]]] <- list(content = backup_first,
+    pin_pit[[name]] <- list(content = backup_first,
                               countdown = "7 days to deletion")
 
     suppressMessages(pins::pin_write(board, pin_pit, "pin_pit"))
@@ -61,7 +61,7 @@ pin_deactivate <- function(board,
                            httr::add_headers(Authorization = paste("Key", key)))
 
     id <- dplyr::bind_rows(httr::content(call_pins))
-    id <- id$guid[id$name == name[i]] # ID of the pin to delete
+    id <- id$guid[id$name == name] # ID of the pin to delete
 
     result <- httr::DELETE(paste0(server, "__api__/v1/content/", id),
                            httr::add_headers(Authorization = paste("Key", key)))
