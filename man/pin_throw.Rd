@@ -8,7 +8,7 @@ pin_throw(
 board,
 file,
 name,
-versioned = FALSE,
+comment = NULL,
 ...)
 }
 \arguments{
@@ -18,9 +18,9 @@ versioned = FALSE,
 
 \item{name}{Name of object to be pinned}
 
-\item{...}{Any additional arguments for pins::pin_write}
+\item{comment}{A description of the pin to be pinned}
 
-\item{versioned}{Whether to pin with version control on}
+\item{...}{Any additional arguments for pins::pin_write}
 }
 \value{
 A pinned object to the specified pins board
@@ -30,11 +30,12 @@ Writes a pin to to specified board while recording metadata to kingpin
 }
 \examples{
 # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
+library(kingpin)
 board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 
-#pins::pin_throw(board, data.frame(a = 1:10, b = 1:10), "temp")
+kingpin::pin_throw(board, data.frame(a = 1:10, b = 1:10), "temp")
 
 # To check if kingpin has updated:
-#kingpin <- purrr::quietly(pins::pin_read)(board, "kingpin")$result$records
+kingpin <- pins::pin_read(board, "kingpin")$result$records
 
 }

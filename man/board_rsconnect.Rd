@@ -13,6 +13,8 @@ key,
 \item{server}{URL of the board server. It's recommended to store these details in .Renviron and use Sys.getenv()}
 
 \item{key}{API key to access the board. It's recommended to store these details in .Renviron and use Sys.getenv()}
+
+\item{...}{Any additional arguments to pass to pins::board_rsconnect()}
 }
 \value{
 Connection to the specified RSConnect board
@@ -22,6 +24,7 @@ Equivalent to pins::board_rsconnect()
 }
 \examples{
 # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
-#board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
+library(kingpin)
+board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 
 }

@@ -24,15 +24,16 @@ Reads a pin from a specified board while recording metadata to kingpin
 }
 \examples{
 # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
+library(kingpin)
 board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 
 # Pin something temporary first
-#pins::pin_write(board, data.frame(a = 1:10, b = 1:10), "temp")
+pins::pin_write(board, data.frame(a = 1:10, b = 1:10), "temp")
 
 # Retrieve pin
-#pin_return(board, name = paste0(Sys.info()["user"], "/temp"))
+pin_return(board, name = "temp")
 
 # To check if kingpin has updated:
- #purrr::quietly(pins::pin_read)(board, name = "kingpin")$result$records
+pins::pin_read(board, name = "kingpin")$result$records
 
 }

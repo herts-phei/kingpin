@@ -15,16 +15,17 @@
 #' @export pin_return
 #' @examples
 #' # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
+#' library(kingpin)
 #' board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 #'
 #' # Pin something temporary first
-#' #pins::pin_write(board, data.frame(a = 1:10, b = 1:10), "temp")
+#' pins::pin_write(board, data.frame(a = 1:10, b = 1:10), "temp")
 #'
 #' # Retrieve pin
-#' #pin_return(board, name = paste0(Sys.info()["user"], "/temp"))
+#' pin_return(board, name = "temp")
 #'
 #' # To check if kingpin has updated:
-#'  #purrr::quietly(pins::pin_read)(board, name = "kingpin")$result$records
+#' pins::pin_read(board, name = "kingpin")$result$records
 #'
 pin_return <- function(board, name, ...) {
 
@@ -40,7 +41,7 @@ pin_return <- function(board, name, ...) {
   }
 
   # Check if user has access to the pin
-  content <- suppressMessages(purrr::safely(pins::pin_read)(board, name))
+  content <- suppressMessages(purrr::safely(pins::pin_read)(board, name, ...))
   if (is.null(content$result)) { stop("The pin doesn't exist or you don't have access to the pin. Please contact the pin owner for access.") }
 
   # Check if there's a comment

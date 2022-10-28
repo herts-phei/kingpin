@@ -6,9 +6,9 @@
 \usage{
 pin_deactivate(
 board,
-name,
-force,
-...)
+server,
+key,
+name)
 }
 \arguments{
 \item{board}{A pins board object from board_rsconnect()}
@@ -18,8 +18,6 @@ force,
 \item{key}{API key to access the board. It's recommended to store these details in .Renviron and use Sys.getenv()}
 
 \item{name}{Name of pin to be read}
-
-\item{force}{Whether to bypass confirmation messages on console}
 }
 \value{
 Specified pin will be deleted but backed up in pin_pit
@@ -42,6 +40,6 @@ key = Sys.getenv("CONNECT_API_KEY"),
 name = "temp")
 
 # To check if the pin has been backed up in pin_pit:
- kingpin::pin_return(board, "pin_pit")
+kingpin::pin_return(board, "pin_pit")
 
 }

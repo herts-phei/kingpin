@@ -6,33 +6,38 @@
 #' board,
 #' file,
 #' name,
-#' versioned = FALSE,
+#' comment = NULL,
 #' ...)
 #'
 #' @param board A pins board object from board_rsconnect()
 #' @param file Object to be pinned
 #' @param name Name of object to be pinned
-#' @param versioned Whether to pin with version control on
+#' @param comment A description of the pin to be pinned
 #' @param ... Any additional arguments for pins::pin_write
 #'
 #' @return A pinned object to the specified pins board
 #' @export pin_throw
 #' @examples
 #' # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
+#' library(kingpin)
 #' board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 #'
-#' #pins::pin_throw(board, data.frame(a = 1:10, b = 1:10), "temp")
+#' kingpin::pin_throw(board, data.frame(a = 1:10, b = 1:10), "temp")
 #'
 #' # To check if kingpin has updated:
-#' #kingpin <- purrr::quietly(pins::pin_read)(board, "kingpin")$result$records
+#' kingpin <- pins::pin_read(board, "kingpin")$result$records
 #'
 pin_throw <- function(board,
                       file,
                       name,
-                      comment = NULL, ...) {
+                      comment = NULL,
+                      ...) {
 
   # Clean pin name
   name <- sub('.*/', '', name)
+
+  # Add comment if it already exists
+  if(!is.null(comment(file))) comment <- comment(file)
 
   # Add comment
   comment(file) <- comment
@@ -51,7 +56,7 @@ pin_throw <- function(board,
   }
 
   # Write pin and check if user has access to the pin
-  access <- suppressMessages(purrr::safely(pins::pin_write)(board, file, name))
+  access <- suppressMessages(purrr::safely(pins::pin_write)(board, file, name, ...))
   if (is.null(access$result)) { stop("You are trying to write to an existing pin you do not have access to. Please check the board before trying again.") }
 
   # Update kingpin

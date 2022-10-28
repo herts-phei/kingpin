@@ -5,17 +5,20 @@
 #' @usage setup_kingpin(
 #' server,
 #' key,
-#' force = FALSE)
+#' force = FALSE,
+#' group = "Epi")
 #'
 #' @param server URL of the board server. It's recommended to store these details in .Renviron and use Sys.getenv()
 #' @param key API key to access the board. It's recommended to store these details in .Renviron and use Sys.getenv()
 #' @param force Whether to force an override of an existing kingpin.
+#' @param group The group name to give editing permissions to by default
 #'
 #' @return A new pin named "kingpin" will be pinned on the board supplied to the function.
 #' @export
 #' @examples
 #' # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
-#' setup_kingpin(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
+#' library(kingpin)
+#' kingpin::setup_kingpin(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 #'
 setup_kingpin <- function(server,
                           key,

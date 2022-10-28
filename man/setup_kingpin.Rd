@@ -7,7 +7,8 @@
 setup_kingpin(
 server,
 key,
-force = FALSE)
+force = FALSE,
+group = "Epi")
 }
 \arguments{
 \item{server}{URL of the board server. It's recommended to store these details in .Renviron and use Sys.getenv()}
@@ -15,6 +16,8 @@ force = FALSE)
 \item{key}{API key to access the board. It's recommended to store these details in .Renviron and use Sys.getenv()}
 
 \item{force}{Whether to force an override of an existing kingpin.}
+
+\item{group}{The group name to give editing permissions to by default}
 }
 \value{
 A new pin named "kingpin" will be pinned on the board supplied to the function.
@@ -24,6 +27,7 @@ Sets up an empty "kingpin" pin to a board to be populated by activity data
 }
 \examples{
 # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
-setup_kingpin(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
+library(kingpin)
+kingpin::setup_kingpin(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 
 }
