@@ -39,7 +39,7 @@ pin_deactivate <- function(board,
 
   text <- "Deleted and backed up: \n"
 
-  for (i in 1:length(name)) {
+  for (i in 1:length(names)) {
 
     # Clean pin name
     name <- sub('.*/', '', names[i])
