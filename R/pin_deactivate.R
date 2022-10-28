@@ -1,17 +1,17 @@
 
 #' Pin deactivate
 #'
-#' @description "Softly" deactivates a pin by transferring its data to a temporary pin scheduled for deletion.
+#' @description "Carefully" deactivates a pin by transferring its data to a temporary pin scheduled for deletion.
 #' @usage pin_deactivate(
 #' board,
 #' server,
 #' key,
-#' name)
+#' names)
 #'
 #' @param board A pins board object from board_rsconnect()
 #' @param server URL of the board server. It's recommended to store these details in .Renviron and use Sys.getenv()
 #' @param key API key to access the board. It's recommended to store these details in .Renviron and use Sys.getenv()
-#' @param name Name of pin to be read
+#' @param names Name of pin to be read
 #'
 #' @return Specified pin will be deleted but backed up in pin_pit
 #' @export
@@ -27,7 +27,7 @@
 #' kingpin::pin_deactivate(board,
 #' server = Sys.getenv("CONNECT_SERVER"),
 #' key = Sys.getenv("CONNECT_API_KEY"),
-#' name = "temp")
+#' names = "temp")
 #'
 #' # To check if the pin has been backed up in pin_pit:
 #' kingpin::pin_return(board, "pin_pit")
@@ -35,14 +35,14 @@
 pin_deactivate <- function(board,
                            server,
                            key,
-                           name) {
+                           names) {
 
   text <- "Deleted and backed up: \n"
 
   for (i in 1:length(name)) {
 
     # Clean pin name
-    name <- sub('.*/', '', name[i])
+    name <- sub('.*/', '', names[i])
 
     # Check if user has access to the pin
     content <- suppressMessages(purrr::safely(pins::pin_read)(board, name))
