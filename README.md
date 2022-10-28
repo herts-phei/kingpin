@@ -24,7 +24,7 @@ Download the current version of the package by running
 
 ## Setup 
 
-If this is the first time you are using the kingpin package, follow the instructions below. You can check if this is the case by checking if your RSConnect board has a "kingpin" and "pin_pit" pin with editing privileges given to the most active group. "pin_pit_status" should also be setup as a deployed Rmarkdown file. 
+If this is the first time you are using the kingpin package, follow the instructions below. You can check if this is the case by checking if your RSConnect board has a "kingpin" and "pin_pit" pin with editing privileges given to the most active group. "pin_pit_status" should also be setup as a deployed Rmarkdown file. Do NOT make several copies of any of these files as this will make certain functions error. 
 
 - To set up kingpin and pin_pit, if they are missing: Run `kingpin::setupkingpin(server = Sys.getenv("CONNECT_SERVER", key = Sys.getenv("CONNECT_API_KEY"))` and check if the two pins now exist with appropriate permissions. 
 - To set up pin_pit_status, if it is missing: Create a new Rmarkdown file, delete everything in it, and paste in the contents of [this file](https://github.com/herts-phei/kingpin/blob/master/inst/rmd/pin_pit_status.Rmd). Deploy this to your RSConnect board and add the two environmental variables (CONNECT_SERVER, CONNECT_API_KEY). Schedule it to run every work day at a time of your choosing. 
