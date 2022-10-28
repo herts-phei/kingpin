@@ -30,7 +30,7 @@
 #' names = "temp")
 #'
 #' # To check if the pin has been backed up in pin_pit:
-#' kingpin::pin_return(board, "pin_pit")
+#' pin_pit <- kingpin::pin_return(board, "pin_pit")
 #'
 pin_deactivate <- function(board,
                            server,

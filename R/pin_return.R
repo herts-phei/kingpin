@@ -25,7 +25,7 @@
 #' pin_return(board, name = "temp")
 #'
 #' # To check if kingpin has updated:
-#' pins::pin_read(board, name = "kingpin")$result$records
+#' kingpin <- pins::pin_read(board, name = "kingpin")$records
 #'
 pin_return <- function(board, name, ...) {
 

@@ -25,7 +25,7 @@
 #' kingpin::pin_throw(board, data.frame(a = 1:10, b = 1:10), "temp")
 #'
 #' # To check if kingpin has updated:
-#' kingpin <- pins::pin_read(board, "kingpin")$result$records
+#' kingpin <- pins::pin_read(board, "kingpin")$records
 #'
 pin_throw <- function(board,
                       file,
