@@ -66,7 +66,7 @@ pin_deactivate <- function(board,
     result <- httr::DELETE(paste0(server, "__api__/v1/content/", id),
                            httr::add_headers(Authorization = paste("Key", key)))
 
-    text <- cat(text, paste0(name[i], " \U0002705", "\n"))
+    text <- cat(text, paste0(name, " \U0002705", "\n"))
 
   }
 
