@@ -42,14 +42,14 @@ pin_deactivate <- function(board,
   for (i in 1:length(name)) {
 
     # Clean pin name
-    name <- sub('.*/', '', name)
+    name <- sub('.*/', '', name[i])
 
     # Check if user has access to the pin
     content <- suppressMessages(purrr::safely(pins::pin_read)(board, name))
     if (is.null(content$result)) { stop("The pin doesn't exist or you don't have access to the pin. Please contact the pin owner for access.") }
 
     # RENAME PIN AND ADD DATA TO PIN_PIT
-    backup_first <- purrr::quietly(pins::pin_read)(board, name[i])$result
+    backup_first <- purrr::quietly(pins::pin_read)(board, name)$result
     pin_pit <- purrr::quietly(pins::pin_read)(board, "pin_pit")$result
     pin_pit[[name[i]]] <- list(content = backup_first,
                               countdown = "7 days to deletion")
