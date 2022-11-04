@@ -1,7 +1,7 @@
 
 #' Pin deactivate
 #'
-#' @description "Carefully" deactivates a pin by transferring its data to a temporary pin scheduled for deletion.
+#' @description "Carefully" deactivates a pin by transferring its data to a temporary pin scheduled for deletion. The pin will be backed up for 7 working days by default.
 #' @usage pin_deactivate(
 #' board,
 #' server,
@@ -11,7 +11,7 @@
 #' @param board A pins board object from board_rsconnect()
 #' @param server URL of the board server. It's recommended to store these details in .Renviron and use Sys.getenv()
 #' @param key API key to access the board. It's recommended to store these details in .Renviron and use Sys.getenv()
-#' @param names Name of pin to be read
+#' @param names Name of the pins to be deactivated. Can be a single value or a vector of pin names.
 #'
 #' @return Specified pin will be deleted but backed up in pin_pit
 #' @export
