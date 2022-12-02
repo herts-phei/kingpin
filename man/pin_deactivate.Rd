@@ -8,7 +8,7 @@ pin_deactivate(
 board,
 server,
 key,
-name)
+names)
 }
 \arguments{
 \item{board}{A pins board object from board_rsconnect()}
@@ -17,13 +17,13 @@ name)
 
 \item{key}{API key to access the board. It's recommended to store these details in .Renviron and use Sys.getenv()}
 
-\item{name}{Name of pin to be read}
+\item{names}{Name of the pins to be deactivated. Can be a single value or a vector of pin names.}
 }
 \value{
 Specified pin will be deleted but backed up in pin_pit
 }
 \description{
-"Softly" deactivates a pin by transferring its data to a temporary pin scheduled for deletion.
+"Carefully" deactivates a pin by transferring its data to a temporary pin scheduled for deletion. The pin will be backed up for 7 working days by default.
 }
 \examples{
 # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
@@ -31,15 +31,15 @@ library(kingpin)
 board <- kingpin::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 
 # Pin something temporary first
-kingpin::pin_throw(board, data.frame(a = 1:10, b = 1:10), "temp")
+kingpin::pin_throw(board, data.frame(a = 1:10, b = 1:10), "tempiris")
 
 # Retrieve pin
 kingpin::pin_deactivate(board,
 server = Sys.getenv("CONNECT_SERVER"),
 key = Sys.getenv("CONNECT_API_KEY"),
-name = "temp")
+names = "tempiris")
 
 # To check if the pin has been backed up in pin_pit:
-kingpin::pin_return(board, "pin_pit")
+pin_pit <- kingpin::pin_return(board, "pin_pit")
 
 }

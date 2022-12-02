@@ -19,10 +19,10 @@
 #' board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 #'
 #' # Pin something temporary first
-#' pins::pin_write(board, data.frame(a = 1:10, b = 1:10), "temp")
+#' pins::pin_write(board, x = iris, name = "temp_iris")
 #'
 #' # Retrieve pin
-#' pin_return(board, name = "temp")
+#' pin_return(board, name = "temp_iris")
 #'
 #' # To check if kingpin has updated:
 #' kingpin <- pins::pin_read(board, name = "kingpin")$records

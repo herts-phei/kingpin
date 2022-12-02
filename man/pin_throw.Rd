@@ -33,9 +33,9 @@ Writes a pin to to specified board while recording metadata to kingpin
 library(kingpin)
 board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 
-kingpin::pin_throw(board, data.frame(a = 1:10, b = 1:10), "temp")
+kingpin::pin_throw(board, data.frame(a = 1:10, b = 1:10), "tempiris")
 
 # To check if kingpin has updated:
-kingpin <- pins::pin_read(board, "kingpin")$result$records
+kingpin <- pins::pin_read(board, "kingpin")$records
 
 }

@@ -21,13 +21,13 @@
 #' board <- kingpin::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 #'
 #' # Pin something temporary first
-#' kingpin::pin_throw(board, data.frame(a = 1:10, b = 1:10), "temp")
+#' kingpin::pin_throw(board, data.frame(a = 1:10, b = 1:10), "tempiris")
 #'
 #' # Retrieve pin
 #' kingpin::pin_deactivate(board,
 #' server = Sys.getenv("CONNECT_SERVER"),
 #' key = Sys.getenv("CONNECT_API_KEY"),
-#' names = "temp")
+#' names = "tempiris")
 #'
 #' # To check if the pin has been backed up in pin_pit:
 #' pin_pit <- kingpin::pin_return(board, "pin_pit")
