@@ -1,17 +1,17 @@
 
 test_that("function deletes pin and backs up to pin_pit", {
 
-  board <- board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY"))
+  board <- suppressMessages(board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY")))
 
   test_name <- paste0(Sys.info()["user"], "_unittest3-1_", Sys.Date())
 
-  pins::pin_write(board, data.frame(col = test_name), name = test_name)
+  suppressMessages(pins::pin_write(board, data.frame(col = test_name), name = test_name))
 
-  pin_deactivate(board, server = Sys.getenv("CONNECT_SERVER"),
-                 key = Sys.getenv("CONNECT_API_KEY"), name = test_name)
+  suppressMessages(pin_deactivate(board, server = Sys.getenv("CONNECT_SERVER"),
+                 key = Sys.getenv("CONNECT_API_KEY"), name = test_name))
 
   res1 <- purrr::safely(pins::pin_read)(board, test_name) # kingpin record
-  res2 <- pins::pin_read(board, "pin_pit")
+  res2 <- suppressMessages(pins::pin_read(board, "pin_pit"))
 
   # Tests
   expect_true(

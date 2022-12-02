@@ -1,13 +1,13 @@
 test_that("pinning works and action is recorded in kingpin", {
 
-  board <- board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY"))
+  board <- suppressMessages(board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY")))
 
   test_name <- paste0(Sys.info()["user"], "_unittest2-1_", Sys.Date())
-  pin_throw(board, data.frame(col = test_name),
-            name = test_name)
+  suppressMessages(pin_throw(board, data.frame(col = test_name),
+            name = test_name))
 
-  res1 <- pins::pin_read(board, test_name)$col # pin
-  res2 <- pins::pin_read(board, "kingpin")$records # kingpin record
+  res1 <- suppressMessages(pins::pin_read(board, test_name)$col) # pin
+  res2 <- suppressMessages(pins::pin_read(board, "kingpin")$records) # kingpin record
 
   # Delete temporary pin
   call_pins <- httr::GET(paste0(Sys.getenv("CONNECT_SERVER"), "__api__/v1/content"),
@@ -31,13 +31,13 @@ test_that("pinning works and action is recorded in kingpin", {
 
 test_that("pin information is correct in kingpin", {
 
-  board <- board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY"))
+  board <- suppressMessages(board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY")))
   test_name <- paste0(Sys.info()["user"], "_unittest2-2_", Sys.Date())
 
-  pin_throw(board, data.frame(col = test_name),
-            name = test_name)
+  suppressMessages(pin_throw(board, data.frame(col = test_name),
+            name = test_name))
 
-  res1 <- pins::pin_read(board, "kingpin")$records # kingpin record
+  res1 <- suppressMessages(pins::pin_read(board, "kingpin")$records) # kingpin record
   res1 <- res1[res1$pin_name == test_name, ]
 
   # Delete temporary pin
@@ -72,14 +72,14 @@ test_that("pin information is correct in kingpin", {
 
 test_that("comment is kept if provided", {
 
-  board <- board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY"))
+  board <- suppressMessages(board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY")))
   test_name <- paste0(Sys.info()["user"], "_unittest2-3_", Sys.Date())
 
-  pin_throw(board, data.frame(col = test_name),
+  suppressMessages(pin_throw(board, data.frame(col = test_name),
             name = test_name,
-            comment = test_name)
+            comment = test_name))
 
-  res1 <- pins::pin_read(board, "kingpin")$records # kingpin record
+  res1 <- suppressMessages(pins::pin_read(board, "kingpin")$records) # kingpin record
   res1 <- res1[res1$pin_name == test_name, ]
   res2 <- purrr::quietly(pin_return)(board, test_name)$result
   res3 <- purrr::quietly(pin_return)(board, test_name)$output

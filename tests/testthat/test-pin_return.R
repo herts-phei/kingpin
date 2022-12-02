@@ -1,13 +1,13 @@
 test_that("reading works and action is recorded in kingpin", {
 
-  board <- board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY"))
+  board <- suppressMessages(board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY")))
   test_name <- paste0(Sys.info()["user"], "_unittest1-1_", Sys.Date())
 
-  pins::pin_write(board, data.frame(col = test_name),
-            name = test_name)
+  suppressMessages(pins::pin_write(board, data.frame(col = test_name),
+            name = test_name))
 
   res1 <- pin_return(board, test_name)$col
-  res2 <- pins::pin_read(board, "kingpin")$records # kingpin record
+  res2 <- suppressMessages(pins::pin_read(board, "kingpin")$records) # kingpin record
 
   # Delete temporary pin
   call_pins <- httr::GET(paste0(Sys.getenv("CONNECT_SERVER"), "__api__/v1/content"),
@@ -31,11 +31,11 @@ test_that("reading works and action is recorded in kingpin", {
 
 test_that("pin information is correct in kingpin", {
 
-  board <- board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY"))
+  board <- suppressMessages(board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY")))
 
   test_name <- paste0(Sys.info()["user"], "_unittest1-2_", Sys.Date())
 
-  pins::pin_write(board, data.frame(col = test_name), name = test_name)
+  suppressMessages(pins::pin_write(board, data.frame(col = test_name), name = test_name))
 
   return <- pin_return(board, test_name)
   res1 <- pin_return(board, "kingpin")$records # kingpin record

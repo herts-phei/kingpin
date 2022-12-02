@@ -8,9 +8,10 @@ test_that("execution halts if kingpin exists (no force)", {
 
 test_that("kingpin is the correct format", {
   connect <- purrr::quietly(setup_kingpin)(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY"))
-  board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"),
-                                 key = Sys.getenv("CONNECT_API_KEY"))
-  kingpin <- pins::pin_read(board, "kingpin")
+  board <- suppressMessages(pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"),
+                                 key = Sys.getenv("CONNECT_API_KEY")))
+
+  kingpin <- suppressMessages(pins::pin_read(board, "kingpin"))
 
   expect_true(
     all(
@@ -23,8 +24,9 @@ test_that("kingpin is the correct format", {
 
 test_that("pin_pit is made", {
   connect <- purrr::quietly(setup_kingpin)(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY"))
-  board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"),
-                                 key = Sys.getenv("CONNECT_API_KEY"))
+  board <- suppressMessages(pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"),
+                                 key = Sys.getenv("CONNECT_API_KEY")))
+
   pin_pit <- purrr::quietly(pins::pin_read)(board, "pin_pit")
   expect_true(!is.null(pin_pit$result))
 })
