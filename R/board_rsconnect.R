@@ -13,7 +13,7 @@
 #' @return Connection to the specified RSConnect board
 #' @export
 #' @examples
-#' # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
+#' #Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
 #' library(kingpin)
 #' board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 #'
