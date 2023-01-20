@@ -36,20 +36,25 @@ pin_throw <- function(board,
   # Clean pin name
   name <- sub('.*/', '', name)
 
-  # Add comment if it already exists
-  if(!is.null(comment(file))) comment <- comment(file)
+  # Adding comments
+  if (is.null(comment)) { # if not specified
 
-  # Add comment if it already exists from the previous version of the pin
-  pin_prev <- suppressMessages(purrr::safely(pins::pin_read)(board, name))
+    # Add comment if it already exists
+    if(!is.null(comment(file))) comment <- comment(file)
 
-  if(is.null(pin_prev$error)) { comment <- comment(pin_prev$result) }
+    # OR add comment if it already exists from the previous version of the pin (high priority)
+    pin_prev <- suppressMessages(purrr::safely(pins::pin_read)(board, name))
+    if(is.null(pin_prev$error)) { comment <- comment(pin_prev$result) }
 
-  # Add comment
-  comment(file) <- comment
+  } else { # if specified
+    # Add comment
+    comment(file) <- comment
+  }
 
+  # If comment is still NULL:
   if (is.null(comment)) {
     message("Pin will be pinned with no description. Please consider adding a description using the `comment` argument.")
-    comment <- NA } else {
+    comment <- NA } else { # If comment is not NULL
       cat("Pinned", name, "with the description '", comment(file), "'.")
     }
 
