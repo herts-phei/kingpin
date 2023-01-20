@@ -103,3 +103,36 @@ test_that("comment is kept if provided", {
     )
   )
 })
+
+test_that("comment is kept if previous version of pin has a comment", {
+
+  board <- suppressMessages(board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY")))
+  test_name <- paste0(Sys.info()["user"], "_unittest2-3_", Sys.Date())
+
+  suppressMessages(pin_throw(board, data.frame(col = test_name),
+                             name = test_name,
+                             comment = test_name))
+
+  suppressMessages(pin_throw(board, data.frame(col = test_name),
+                             name = test_name))
+
+  retrieve_pin <- suppressMessages(pins::pin_read(board, name = test_name))
+  res1 <- comment(retrieve_pin)
+
+  # Delete temporary pin
+  call_pins <- httr::GET(paste0(Sys.getenv("CONNECT_SERVER"), "__api__/v1/content"),
+                         httr::add_headers(Authorization = paste("Key", Sys.getenv("CONNECT_API_KEY"))))
+
+  id <- dplyr::bind_rows(httr::content(call_pins))
+  id <- id$guid[id$name == test_name] # ID of the pin to delete
+
+  result <- httr::DELETE(paste0(Sys.getenv("CONNECT_SERVER"), "__api__/v1/content/", id),
+                         httr::add_headers(Authorization = paste("Key", Sys.getenv("CONNECT_API_KEY"))))
+
+  # Tests
+  expect_true(
+    all(
+      all(test_name == res1) # check that comment is correct even after pinning a second time without comment specified
+    )
+  )
+})

@@ -39,8 +39,14 @@ pin_throw <- function(board,
   # Add comment if it already exists
   if(!is.null(comment(file))) comment <- comment(file)
 
+  # Add comment if it already exists from the previous version of the pin
+  pin_prev <- suppressMessages(purrr::safely(pins::pin_read)(board, name))
+
+  if(is.null(pin_prev$error)) { comment <- comment(pin_prev$result) }
+
   # Add comment
   comment(file) <- comment
+
   if (is.null(comment)) {
     message("Pin will be pinned with no description. Please consider adding a description using the `comment` argument.")
     comment <- NA } else {
@@ -54,6 +60,13 @@ pin_throw <- function(board,
   } else {
     project <- sub('.*/', '', rstudioapi::getActiveProject())
   }
+
+  # # Get pin ID for
+  # call_pins <- httr::GET(paste0(server, "__api__/v1/content"),
+  #                        httr::add_headers(Authorization = paste("Key", key)))
+  #
+  # id <- dplyr::bind_rows(httr::content(call_pins))
+  # id <- id$guid[id$name == name] # ID of the pin to delete
 
   # Write pin and check if user has access to the pin
   access <- suppressMessages(purrr::safely(pins::pin_write)(board, file, name, ...))
