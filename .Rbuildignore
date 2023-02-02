@@ -2,3 +2,6 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^\.github$
+^kingpin\.Rcheck$
+^kingpin.*\.tar\.gz$
+^kingpin.*\.tgz$

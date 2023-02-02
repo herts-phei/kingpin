@@ -42,7 +42,7 @@ pin_return <- function(board, name, ...) {
 
   # Check if user has access to the pin
   content <- suppressMessages(purrr::safely(pins::pin_read)(board, name, ...))
-  if (is.null(content$result)) { stop("The pin doesn't exist or you don't have access to the pin. Please contact the pin owner for access.") }
+  if (is.null(content$result)) { stop("The pin doesn't exist or you don't have access to the pin. Contact the pin owner for access.") }
 
   # Check if there's a comment
   comment <- ifelse(is.null(comment(content$result)), NA, comment(content$result))

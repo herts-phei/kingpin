@@ -1,3 +1,6 @@
 .Rproj.user
 inst/rmd/pin_pit_status.html
 inst/rmd/rsconnect
+kingpin.Rcheck/
+kingpin*.tar.gz
+kingpin*.tgz

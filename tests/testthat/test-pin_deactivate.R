@@ -16,7 +16,7 @@ test_that("function deletes pin and backs up to pin_pit", {
   # Tests
   expect_true(
     all(
-      !is.null(res1$error), # error message suggests the pin doesn't exist/deleted
+      !is.null(res1$error), # error message suggests the pin doesn't exist or deleted
       test_name %in% names(res2), # temp pin has been backed up
       test_name %in% res2[[test_name]]$content$col, # content of backup is correct
       "7 days to deletion" %in% res2[[test_name]]$countdown # maximum duration is given before deletion
