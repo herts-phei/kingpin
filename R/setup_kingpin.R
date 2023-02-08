@@ -35,19 +35,9 @@ setup_kingpin <- function(server,
                          write_date = Sys.time(), # date of pin_write instance
                          reader = NA, # username of pin_read instance
                          read_date = NA, # date of pin_read instance
-                         comment = "Kingpin holding pin usage data"
-    ),
-    summary = data.frame(pin_name = "kingpin", # pin name
-                         project_names = NA, # concatenated names of project associated with pin, if applicable
-                         project_count = NA, # number of associated projects
-                         writers = Sys.info()["user"], #  concatenated usernames of pin_write instances
-                         write_date_range = NA, # date range of pin_write instances
-                         write_instances = NA, # count of write instances
-                         readers = NA, # concatenated usernames of pin_read instances
-                         read_date_range = NA, # date range of pin_read instances
-                         read_instances = NA # count of read instances
+                         comment = "Kingpin holding pin usage data")
     )
-  )
+
 
   pin_pit <- list()
 

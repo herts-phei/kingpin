@@ -208,7 +208,6 @@ projects <- projects %>%
   left_join(project_pins_write, by = c("project_name" = "project_name"))
 
 # Pinning -----------------------------------------------------------------
-
 l <- list(pin_summary = pins,
           user_summary = users,
           project_summary = projects)
@@ -217,13 +216,15 @@ kingpin::pin_throw(board, l, name = "kingpin_summary",
                    comment = "Kingpin summary data: Pins, users, projects")
 
 # Clean kingpin data
-kingpin <- data.frame(pin_name = "kingpin", # pin name
-                      project_name = "none", # name of project associated with pin, if applicable
-                      writer = Sys.info()["user"], # username of pin_write instance
-                      write_date = Sys.time(), # date of pin_write instance
-                      reader = NA, # username of pin_read instance
-                      read_date = NA, # date of pin_read instance
-                      comment = "Kingpin holding pin usage data")
+kingpin <- list(
+  records = data.frame(pin_name = "kingpin", # pin name
+                       project_name = "none", # name of project associated with pin, if applicable
+                       writer = Sys.info()["user"], # username of pin_write instance
+                       write_date = Sys.time(), # date of pin_write instance
+                       reader = NA, # username of pin_read instance
+                       read_date = NA, # date of pin_read instance
+                       comment = "Kingpin holding pin usage data"
+  ))
 
 kingpin::pin_throw(board, kingpin, name = "kingpin",
                    comment = "Kingpin holding pin usage data")
