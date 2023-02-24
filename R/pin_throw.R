@@ -69,6 +69,11 @@ pin_throw <- function(board,
   # Get the old pin's metadata
 
   old_info <- suppressMessages(purrr::safely(pins::pin_meta)(board, name))
+  if(is.null(old_info$results)){
+    old_info$result$filesize = 0
+  } else if (!is.null(old_info$error)){
+    stop(old_info$error$message)
+  }
 
   # # Get pin ID for
   # call_pins <- httr::GET(paste0(server, "__api__/v1/content"),
