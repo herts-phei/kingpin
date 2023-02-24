@@ -6,8 +6,16 @@ board <- board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_K
 kingpin <- pin_return(board, "kingpin")
 
 record_level <- kingpin$records
-summary_level <- kingpin$summary
 
+previous <- kingpin::pin_return(board, "kingpin_summary")
+pin_summary_prev <- previous$pin_summary
+user_summary_prev <- previous$user_summary
+project_summary_prev <- previous$project_summary
+
+# New additions
+
+new_users <- users[!users$user %in% user_summary_prev$user, ]
+new_projects <- projects[!projects$project_name %in% project_summary_prev$project_name, ]
 
 # Pins --------------------------------------------------------------------
 
@@ -26,6 +34,22 @@ pins <- record_level %>%
                                     origin = "1970-01-01"),
                 last_write = as.Date(ifelse(last_write == -Inf, NA, last_write),
                                      origin = "1970-01-01"))
+
+new_pins <- pins[!pins$pin_name %in% pin_summary_prev$pin_name, ]
+
+pins <- pin_summary_prev %>%
+  left_join(pins, by = c("pin_name" = "pin_name")) %>%
+  rowwise() %>%
+  mutate(read_instances = sum(read_instances.x, read_instances.y, na.rm = TRUE),
+         write_instances = sum(write_instances.x, write_instances.y, na.rm = TRUE),
+         last_read = last_read.y,
+         last_write = last_write.y) %>%
+  select(pin_name, read_instances, last_read, write_instances, last_write, comment = comment.y) %>%
+  distinct() %>%
+  bind_rows(new_pins)
+
+# Deduplicate concatenated projects
+pin_summary_prev$projects_read_conc[pin_summary_prev]
 
 project_read <- record_level %>%
   filter(!is.na(reader)) %>%
@@ -206,6 +230,7 @@ if(nrow(projects_read) > nrow(projects_write)) {
 projects <- projects %>%
   left_join(project_pins_read, by = c("project_name" = "project_name")) %>%
   left_join(project_pins_write, by = c("project_name" = "project_name"))
+
 
 # Pinning -----------------------------------------------------------------
 l <- list(pin_summary = pins,

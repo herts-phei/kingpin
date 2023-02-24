@@ -79,7 +79,7 @@ pin_throw <- function(board,
 
   # Write pin and check if user has access to the pin
   access <- suppressMessages(purrr::safely(pins::pin_write)(board, file, name, ...))
-  if (is.null(access$result)) { stop("You are trying to write to an existing pin you do not have access to. Please check the board before trying again.") }
+  if (is.null(access$result)) { stop("Error occured during pinning.") }
 
   # Get new metadata
 
