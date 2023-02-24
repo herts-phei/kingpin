@@ -35,6 +35,7 @@ setup_kingpin <- function(server,
                          write_date = Sys.time(), # date of pin_write instance
                          reader = NA, # username of pin_read instance
                          read_date = NA, # date of pin_read instance
+                         last_modified = NA,
                          comment = "Kingpin holding pin usage data")
     )
 

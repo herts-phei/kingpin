@@ -66,6 +66,10 @@ pin_throw <- function(board,
     project <- sub('.*/', '', rstudioapi::getActiveProject())
   }
 
+  # Get the old pin's metadata
+
+  old_info <- suppressMessages(purrr::safely(pins::pin_meta)(board, name))
+
   # # Get pin ID for
   # call_pins <- httr::GET(paste0(server, "__api__/v1/content"),
   #                        httr::add_headers(Authorization = paste("Key", key)))
@@ -77,6 +81,16 @@ pin_throw <- function(board,
   access <- suppressMessages(purrr::safely(pins::pin_write)(board, file, name, ...))
   if (is.null(access$result)) { stop("You are trying to write to an existing pin you do not have access to. Please check the board before trying again.") }
 
+  # Get new metadata
+
+  new_info <- suppressMessages(purrr::safely(pins::pin_meta)(board, name))
+
+  if(new_info$result$file_size == old_info$result$file_size){
+    modified = NA
+  } else {
+    modified = Sys.time()
+  }
+
   # Update kingpin
   kingpin <- purrr::quietly(pins::pin_read)(board, "kingpin")$result
   kingpin$records <- kingpin$records |>
@@ -86,6 +100,7 @@ pin_throw <- function(board,
                                 write_date = as.character(Sys.time()), # date of pin_write instance
                                 reader = NA, # username of pin_read instance
                                 read_date = NA, # date of pin_read instance
+                                last_modified = modified,
                                 comment = comment
 
     ))

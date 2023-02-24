@@ -56,6 +56,7 @@ pin_return <- function(board, name, ...) {
                                 write_date = NA, # date of pin_write instance
                                 reader = Sys.info()["user"], # username of pin_read instance
                                 read_date = as.character(Sys.time()), # date of pin_read instance
+                                last_modified = NA,
                                 comment = comment
     ))
 
