@@ -67,12 +67,27 @@ pin_throw <- function(board,
   }
 
   # Get the old pin's metadata
-
   old_info <- suppressMessages(purrr::safely(pins::pin_meta)(board, name))
-  if(is.null(old_info$results)){
-    old_info$result$filesize = 0
-  } else if (!is.null(old_info$error)){
-    stop(old_info$error$message)
+
+  # Write pin and check if user has access to the pin
+  access <- suppressMessages(purrr::safely(pins::pin_write)(board, file, name, ...))
+  if (is.null(access$result)) { stop("Error occured during pinning.") }
+
+  if(!is.null(old_info$error)){ # If old pin doesnt exist yet/error in collecting pin, it has no size
+
+    modified <- NA
+
+  } else { # If it exists, compare sizes
+
+    # Get new metadata
+    new_info <- suppressMessages(purrr::safely(pins::pin_meta)(board, name))
+
+    if(new_info$result$file_size == old_info$result$file_size){
+      modified = NA
+    } else {
+      modified = Sys.time()
+    }
+
   }
 
   # # Get pin ID for
@@ -81,20 +96,6 @@ pin_throw <- function(board,
   #
   # id <- dplyr::bind_rows(httr::content(call_pins))
   # id <- id$guid[id$name == name] # ID of the pin to delete
-
-  # Write pin and check if user has access to the pin
-  access <- suppressMessages(purrr::safely(pins::pin_write)(board, file, name, ...))
-  if (is.null(access$result)) { stop("Error occured during pinning.") }
-
-  # Get new metadata
-
-  new_info <- suppressMessages(purrr::safely(pins::pin_meta)(board, name))
-
-  if(new_info$result$file_size == old_info$result$file_size){
-    modified = NA
-  } else {
-    modified = Sys.time()
-  }
 
   # Update kingpin
   kingpin <- purrr::quietly(pins::pin_read)(board, "kingpin")$result
