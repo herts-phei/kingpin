@@ -85,7 +85,7 @@ pin_throw <- function(board,
     if(new_info$result$file_size == old_info$result$file_size){
       modified = NA
     } else {
-      modified = Sys.time()
+      modified = as.character(Sys.time())
     }
 
   }
