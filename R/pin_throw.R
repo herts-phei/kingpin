@@ -70,7 +70,9 @@ pin_throw <- function(board,
   old_info <- suppressMessages(purrr::safely(pins::pin_meta)(board, name))
 
   # Write pin and check if user has access to the pin
-  access <- suppressMessages(purrr::safely(pins::pin_write)(board, file, name, ...))
+
+  if(is.na(comment)) { desc <- "No description found." } else { desc <- comment }
+  access <- suppressMessages(purrr::safely(pins::pin_write)(board, file, name, description = desc, ...))
   if (is.null(access$result)) { stop("Error occured during pinning.") }
 
   if(!is.null(old_info$error)){ # If old pin doesnt exist yet/error in collecting pin, it has no size

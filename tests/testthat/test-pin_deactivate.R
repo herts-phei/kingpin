@@ -3,7 +3,7 @@ test_that("function deletes pin and backs up to pin_pit", {
 
   board <- suppressMessages(board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY")))
 
-  test_name <- paste0(Sys.info()["user"], "_unittest3-1_", Sys.Date())
+  test_name <- paste0(gsub(" ", "", Sys.info()["user"]), "_unittest3-1_", Sys.Date())
 
   suppressMessages(pins::pin_write(board, data.frame(col = test_name), name = test_name))
 

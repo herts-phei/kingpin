@@ -1,7 +1,7 @@
 test_that("reading works and action is recorded in kingpin", {
 
   board <- suppressMessages(board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY")))
-  test_name <- paste0(Sys.info()["user"], "_unittest1-1_", Sys.Date())
+  test_name <- paste0(gsub(" ", "", Sys.info()["user"]), "_unittest1-1_", Sys.Date())
 
   suppressMessages(pins::pin_write(board, data.frame(col = test_name),
             name = test_name))
@@ -33,7 +33,7 @@ test_that("pin information is correct in kingpin", {
 
   board <- suppressMessages(board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY")))
 
-  test_name <- paste0(Sys.info()["user"], "_unittest1-2_", Sys.Date())
+  test_name <- paste0(gsub(" ", "", Sys.info()["user"]), "_unittest1-2_", Sys.Date())
 
   suppressMessages(pins::pin_write(board, data.frame(col = test_name), name = test_name))
 

@@ -2,7 +2,7 @@ test_that("pinning works and action is recorded in kingpin", {
 
   board <- suppressMessages(board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY")))
 
-  test_name <- paste0(Sys.info()["user"], "_unittest2-1_", Sys.Date())
+  test_name <- paste0(gsub(" ", "", Sys.info()["user"]), "_unittest2-1_", Sys.Date())
   suppressMessages(pin_throw(board, data.frame(col = test_name),
             name = test_name))
 
@@ -32,7 +32,7 @@ test_that("pinning works and action is recorded in kingpin", {
 test_that("pin information is correct in kingpin", {
 
   board <- suppressMessages(board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY")))
-  test_name <- paste0(Sys.info()["user"], "_unittest2-2_", Sys.Date())
+  test_name <- paste0(gsub(" ", "", Sys.info()["user"]), "_unittest2-2_", Sys.Date())
 
   suppressMessages(pin_throw(board, data.frame(col = test_name),
             name = test_name))
@@ -73,7 +73,7 @@ test_that("pin information is correct in kingpin", {
 test_that("comment is kept if provided", {
 
   board <- suppressMessages(board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY")))
-  test_name <- paste0(Sys.info()["user"], "_unittest2-3_", Sys.Date())
+  test_name <- paste0(gsub(" ", "", Sys.info()["user"]), "_unittest2-3_", Sys.Date())
 
   suppressMessages(pin_throw(board, data.frame(col = test_name),
             name = test_name,
@@ -107,7 +107,7 @@ test_that("comment is kept if provided", {
 test_that("comment is kept if previous version of pin has a comment", {
 
   board <- suppressMessages(board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY")))
-  test_name <- paste0(Sys.info()["user"], "_unittest2-3_", Sys.Date())
+  test_name <- paste0(gsub(" ", "", Sys.info()["user"]), "_unittest2-4_", Sys.Date())
 
   suppressMessages(pin_throw(board, data.frame(col = test_name),
                              name = test_name,
@@ -140,7 +140,7 @@ test_that("comment is kept if previous version of pin has a comment", {
 test_that("last_modified column in kingpin is stored when dataset is changed", {
 
   board <- suppressMessages(board_rsconnect(Sys.getenv("CONNECT_SERVER"), Sys.getenv("CONNECT_API_KEY")))
-  test_name <- paste0(gsub(" ", "", Sys.info()["user"]), "_unittest2-4_", Sys.Date())
+  test_name <- paste0(gsub(" ", "", Sys.info()["user"]), "_unittest2-5_", Sys.Date())
 
   # If pin doesn't exist, last modified should be NA
   suppressMessages(pin_throw(board, data.frame(col = test_name),
