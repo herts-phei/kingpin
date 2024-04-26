@@ -20,7 +20,7 @@
 #' @examples
 #' # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
 #' library(kingpin)
-#' board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
+#' board <- kingpin::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 #'
 #' kingpin::pin_throw(board, data.frame(a = 1:10, b = 1:10), "tempiris")
 #'

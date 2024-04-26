@@ -21,7 +21,7 @@ board_rsconnect <- function(server,
                             key,
                             ...) {
 
-  pins::board_rsconnect(server = server,
+  pins::board_connect(server = server,
                         key = key, ...)
 
 }
