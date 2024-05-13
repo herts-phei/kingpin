@@ -15,17 +15,17 @@
 #' @export pin_return
 #' @examples
 #' # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
-#' library(kingpin)
-#' board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
-#'
-#' # Pin something temporary first
-#' pins::pin_write(board, x = iris, name = "temp_iris")
-#'
-#' # Retrieve pin
-#' pin_return(board, name = "temp_iris")
-#'
-#' # To check if kingpin has updated:
-#' kingpin <- pins::pin_read(board, name = "kingpin")$records
+# library(kingpin)
+# board <- kingpin::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
+#
+# # Pin something temporary first
+# pins::pin_write(board, x = iris, name = "temp_iris")
+#
+# # Retrieve pin
+# pin_return(board, name = "temp_iris")
+#
+# # To check if kingpin has updated:
+# kingpin <- pins::pin_read(board, name = "kingpin")$records
 #'
 pin_return <- function(board, name, ...) {
 
@@ -42,7 +42,7 @@ pin_return <- function(board, name, ...) {
 
   # Check if user has access to the pin
   content <- suppressMessages(purrr::safely(pins::pin_read)(board, name, ...))
-  if (is.null(content$result)) { stop("The pin doesn't exist or you don't have access to the pin. Contact the pin owner for access.") }
+  if (is.null(content$result)) { stop("Error occured during fetching of pin. Please check if you have access or have provided the correct pin name.") }
 
   # Check if there's a comment
   comment <- ifelse(is.null(comment(content$result)), NA, comment(content$result))

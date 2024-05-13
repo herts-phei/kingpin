@@ -51,6 +51,7 @@ pin_deactivate <- function(board,
     # RENAME PIN AND ADD DATA TO PIN_PIT
     backup_first <- purrr::quietly(pins::pin_read)(board, name)$result
     pin_pit <- purrr::quietly(pins::pin_read)(board, "pin_pit")$result
+
     pin_pit[[name]] <- list(content = backup_first,
                               countdown = "7 days to deletion")
 

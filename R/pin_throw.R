@@ -20,7 +20,7 @@
 #' @examples
 #' # Basic usage, assuming .Renviron is set up with CONNECT_SERVER and CONNECT_API_SERVER environmental variables:
 #' library(kingpin)
-#' board <- pins::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
+#' board <- kingpin::board_rsconnect(server = Sys.getenv("CONNECT_SERVER"), key = Sys.getenv("CONNECT_API_KEY"))
 #'
 #' kingpin::pin_throw(board, data.frame(a = 1:10, b = 1:10), "tempiris")
 #'
@@ -67,8 +67,30 @@ pin_throw <- function(board,
   }
 
   # Get the old pin's metadata
-
   old_info <- suppressMessages(purrr::safely(pins::pin_meta)(board, name))
+
+  # Write pin and check if user has access to the pin
+
+  if(is.na(comment)) { desc <- "No description found." } else { desc <- comment }
+  access <- suppressMessages(purrr::safely(pins::pin_write)(board, file, name, description = desc, ...))
+  if (is.null(access$result)) { stop("Error occured during pinning.") }
+
+  if(!is.null(old_info$error)){ # If old pin doesnt exist yet/error in collecting pin, it has no size
+
+    modified <- NA
+
+  } else { # If it exists, compare sizes
+
+    # Get new metadata
+    new_info <- suppressMessages(purrr::safely(pins::pin_meta)(board, name))
+
+    if(new_info$result$file_size == old_info$result$file_size){
+      modified = NA
+    } else {
+      modified = as.character(Sys.time())
+    }
+
+  }
 
   # # Get pin ID for
   # call_pins <- httr::GET(paste0(server, "__api__/v1/content"),
@@ -76,20 +98,6 @@ pin_throw <- function(board,
   #
   # id <- dplyr::bind_rows(httr::content(call_pins))
   # id <- id$guid[id$name == name] # ID of the pin to delete
-
-  # Write pin and check if user has access to the pin
-  access <- suppressMessages(purrr::safely(pins::pin_write)(board, file, name, ...))
-  if (is.null(access$result)) { stop("You are trying to write to an existing pin you do not have access to. Please check the board before trying again.") }
-
-  # Get new metadata
-
-  new_info <- suppressMessages(purrr::safely(pins::pin_meta)(board, name))
-
-  if(new_info$result$file_size == old_info$result$file_size){
-    modified = NA
-  } else {
-    modified = Sys.time()
-  }
 
   # Update kingpin
   kingpin <- purrr::quietly(pins::pin_read)(board, "kingpin")$result

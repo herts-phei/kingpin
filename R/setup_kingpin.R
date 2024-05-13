@@ -25,7 +25,7 @@ setup_kingpin <- function(server,
                           force = FALSE,
                           group = "Epi") {
 
-  board <- pins::board_rsconnect(server = server,
+  board <- pins::board_connect(server = server,
                                  key = key)
 
   kingpin <- list(
