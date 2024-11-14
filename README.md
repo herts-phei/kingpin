@@ -1,7 +1,7 @@
 
 # Kingpin (in progress)
 
-The kingpin package is a supporting pins management package produced for internal use in the PHEI team. External parties may use this package with caution that certain functionalities may not be applicable. 
+The kingpin package is a supporting pins management package produced for internal use in the PHEI team. 
 
 The package has a few key prerequisites:
 - The data team must be active R users who regularly pin items to a private RSConnect board. 
@@ -73,3 +73,7 @@ You should see the pin you just deleted in the list. To see the contents, use in
 You can see how long it would take before the backup is deleted:
 
 `pin_pit$temporary_iris$countdown` 
+
+## Upkeep 
+
+Some form of scheduled job (scheduled Rmd/Quarto doc/CronR job) should be used to regularly clean the "kingpin" pin which has all the raw usage data stored within. As this data is read and written everytime `pin_return` and `pin_throw` are used, it is best to routinely clear it to prevent poor performance everytime these functions are called. It's recommended to clear this data into a backup summary dataset and store it safely.
