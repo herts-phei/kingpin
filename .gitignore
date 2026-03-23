@@ -4,3 +4,4 @@ inst/rmd/rsconnect
 kingpin.Rcheck/
 kingpin*.tar.gz
 kingpin*.tgz
+.Rhistory

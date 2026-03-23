@@ -53,11 +53,9 @@ pin_throw <- function(board,
 
   # If comment is still NULL:
   if (is.null(comment)) {
-    message("Pin will be pinned with no description. Please consider adding a description using the `comment` argument.")
-    comment <- NA } else { # If comment is not NULL
-      cat("Pinned", name, "with the description '", comment(file), "'.")
-    }
-
+    comment <- NA
+  }
+  
   # Get active project
   call <- purrr::safely(rstudioapi::getActiveProject)()
   if(is.null(call$result) | !is.null(call$error)) { # If not in a project or not in a session
@@ -75,6 +73,12 @@ pin_throw <- function(board,
   access <- suppressMessages(purrr::safely(pins::pin_write)(board, file, name, description = desc, ...))
   if (is.null(access$result)) { stop("Error occured during pinning.") }
 
+  if (is.na(comment)){
+    message("Pinned with no description. Please consider adding a description using the `comment` argument.")
+  } else {
+    message("Pinned", name, "with the description '", comment(file), "'.")
+  }
+  
   if(!is.null(old_info$error)){ # If old pin doesnt exist yet/error in collecting pin, it has no size
 
     modified <- NA
