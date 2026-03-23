@@ -31,8 +31,9 @@ project_summary_prev <- previous$project_summary %>%
 pins <- record_level %>%
   mutate(reader_count = ifelse(is.na(reader), 0, 1),
          writer_count = ifelse(is.na(writer), 0, 1)) %>%
+  # dplyr::filter(!grepl("^dict_|^data_dict", pin_name)) |>
   group_by(pin_name) %>%
-  summarise(read_instances = sum(reader_count),
+  reframe(read_instances = sum(reader_count),
             last_read = max(as.Date(read_date), na.rm = TRUE),
             write_instances = sum(writer_count),
             last_write = max(as.Date(write_date), na.rm = TRUE),
